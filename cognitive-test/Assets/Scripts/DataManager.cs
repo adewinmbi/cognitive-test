@@ -5,8 +5,8 @@ public static class CSVManager {
     public class PersonData {
         public string Name { get; set; }
         public List<float> ReactionTimes { get; set; }
+        public List<bool> ReactionCorrect { get; set; }
         public List<float> ConcentrationTimes { get; set; }
-
     }
 
     /// <summary>
@@ -16,7 +16,7 @@ public static class CSVManager {
         string csv = "";
 
         // Add header
-        csv += "Test Index,Reaction Time,Concentration Time\n";
+        csv += "Test Index,Reaction Time,Reaction Correct,Concentration Time\n";
 
         // Append data
         for (int i = 0; i < personData.ReactionTimes.Count; i++) { // Reaction times and concentration times list should be the same length.
