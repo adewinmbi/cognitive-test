@@ -4,6 +4,11 @@ using System.Collections.Generic;
 
 public class Reaction : MonoBehaviour {
 
+    private List<float> reactionTimes;
+    private List<bool> reactionCorrect;
+
+    private float lastGuessTime;
+
     private Object[] symbols;
     private int correctNumber = 0; // 0 is default. Actual numbers are 1, 2, or 3.
     private int testIndex = 0;
@@ -16,18 +21,25 @@ public class Reaction : MonoBehaviour {
     [SerializeField] private Image symbolTall, symbolWide;
 
     private void Start() {
+        reactionTimes = new List<float>();
+        reactionCorrect = new List<bool>();
+
         symbols = Resources.LoadAll("ReactionSymbols", typeof(Sprite));
+        lastGuessTime = Time.time;
         DisplayRandomSymbol();
     }
 
     private void Update() {
         for (int i = 0; i < keyCodes.Length; i++) {
             if (Input.GetKeyDown(keyCodes[i])) {
-                if ((i + 1) == correctNumber) {
+                if ((i + 1) == correctNumber) { // Did the user guess correctly?
                     DisplayRandomSymbol();
+                    reactionCorrect.Add(true);
                 } else {
-                    // Do something when a symbol guessed is wrong
+                    reactionCorrect.Add(false);
                 }
+                reactionTimes.Add(Time.time - lastGuessTime);
+                lastGuessTime = Time.time;
             }
         }
     }
