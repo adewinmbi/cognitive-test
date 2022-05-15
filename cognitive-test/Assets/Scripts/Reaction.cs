@@ -4,6 +4,8 @@ using System.Collections.Generic;
 
 public class Reaction : MonoBehaviour {
 
+    [SerializeField] private GameObject menuScene, testScene, completeScene;
+
     private List<float> reactionTimes;
     private List<bool> reactionCorrect;
 
@@ -40,8 +42,24 @@ public class Reaction : MonoBehaviour {
                 }
                 reactionTimes.Add(Time.time - lastGuessTime);
                 lastGuessTime = Time.time;
+                testIndex++;
+
+                // Check if test is complete after 10 rounds have passed
+                if (testIndex >= 10) {
+                    CompleteTest();
+                }
             }
         }
+    }
+
+    public void BeginTest() {
+        menuScene.SetActive(false);
+        testScene.SetActive(true);
+    }
+
+    private void CompleteTest() {
+        testScene.SetActive(false);
+        completeScene.SetActive(true);
     }
 
     // The sprites at index 0, 3, and 5 are belong in the SymbolTall UI image
