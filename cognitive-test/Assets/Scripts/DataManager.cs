@@ -32,7 +32,7 @@ public static class DataManager {
         string returnString = title + ": ";
 
         int index = 0;
-        for (int i = 0; i < list.Count - 2; i++) {
+        for (int i = 0; i < list.Count - 1; i++) {
             returnString += list[i].ToString() + ", ";
             index = i;
         }
@@ -45,7 +45,7 @@ public static class DataManager {
         string returnString = title + ": ";
 
         int index = 0;
-        for (int i = 0; i < list.Count - 2; i++) {
+        for (int i = 0; i < list.Count - 1; i++) {
             returnString += list[i].ToString() + ", ";
             index = i;
         }

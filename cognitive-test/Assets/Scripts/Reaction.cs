@@ -1,3 +1,5 @@
+// Error to fix: data can still be collected and added when user is viewing stats
+
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
@@ -64,7 +66,9 @@ public class Reaction : MonoBehaviour {
 
         // Display test results
         string results = "";
-        results += DataManager.FloatListToString("Concentration Times", DataManager.concentrationTimes);
+        if (DataManager.concentrationTimes != null) { // If the concentration test was skipped
+            results += DataManager.FloatListToString("Concentration Times", DataManager.concentrationTimes);
+        }
         results += DataManager.FloatListToString("Reaction Times", reactionTimes);
         results += DataManager.BoolListToString("Reaction Accuracy", reactionCorrect);
         completeText.text = results;
