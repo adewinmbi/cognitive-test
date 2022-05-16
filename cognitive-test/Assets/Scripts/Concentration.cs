@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 
 public class Concentration : MonoBehaviour {
@@ -8,6 +9,9 @@ public class Concentration : MonoBehaviour {
     [SerializeField] private Button[] itemButtons;
     [SerializeField] private Image currentImage;
     [SerializeField] private Text currentItemName;
+
+    private List<float> concentrationTimes;
+    private float lastTime;
     private int currButtonIndex;
     private Object[] images;
     private string[] itemNames = { // Names of items that need to be found in images
@@ -19,6 +23,7 @@ public class Concentration : MonoBehaviour {
         menuScene.SetActive(true);
         testScene.SetActive(false);
         completeScene.SetActive(false);
+        concentrationTimes = new List<float>();
         images = Resources.LoadAll("ConcentrationImages", typeof(Sprite));
 
         for (int i = 0; i < itemButtons.Length; i++) {
@@ -38,6 +43,8 @@ public class Concentration : MonoBehaviour {
     private void FinishConcentrationTest() {
         testScene.SetActive(false);
         completeScene.SetActive(true);
+        DataManager.concentrationTimes = concentrationTimes;
+        SceneManager.LoadScene("ReactionTest");
     }
 
     private void ItemFound(int itemIndex) {
@@ -48,6 +55,9 @@ public class Concentration : MonoBehaviour {
             itemButtons[itemIndex].gameObject.SetActive(true);
         }
 
+        concentrationTimes.Add(Time.time - lastTime);
+        lastTime = Time.time;
+
         currentImage.sprite = (Sprite)images[itemIndex];
         currentItemName.text = itemNames[itemIndex];
     }
@@ -57,10 +67,7 @@ public class Concentration : MonoBehaviour {
         testScene.SetActive(true);
         completeScene.SetActive(false);
         ItemFound(0); // Start
-    }
-
-    public void MoveToReactionTest() {
-        SceneManager.LoadScene("ReactionTest");
+        lastTime = Time.time;
     }
 
 }

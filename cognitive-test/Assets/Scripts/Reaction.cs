@@ -5,6 +5,7 @@ using System.Collections.Generic;
 public class Reaction : MonoBehaviour {
 
     [SerializeField] private GameObject menuScene, testScene, completeScene;
+    [SerializeField] private Text completeText;
 
     private List<float> reactionTimes;
     private List<bool> reactionCorrect;
@@ -60,9 +61,16 @@ public class Reaction : MonoBehaviour {
     private void CompleteTest() {
         testScene.SetActive(false);
         completeScene.SetActive(true);
+
+        // Display test results
+        string results = "";
+        results += DataManager.FloatListToString("Concentration Times", DataManager.concentrationTimes);
+        results += DataManager.FloatListToString("Reaction Times", reactionTimes);
+        results += DataManager.BoolListToString("Reaction Accuracy", reactionCorrect);
+        completeText.text = results;
     }
 
-    // The sprites at index 0, 3, and 5 are belong in the SymbolTall UI image
+    // The sprites at index 0, 3, and 5 are belong in the SymbolTall UI image (because they are slightly taller images)
     private void DisplayRandomSymbol() {
         // Clear old symbols
         symbolTall.gameObject.SetActive(false);

@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-public static class CSVManager {
+public static class DataManager {
 
     public class PersonData {
         public string Name { get; set; }
@@ -8,6 +8,8 @@ public static class CSVManager {
         public List<bool> ReactionCorrect { get; set; }
         public List<float> ConcentrationTimes { get; set; }
     }
+
+    public static List<float> concentrationTimes;
 
     /// <summary>
     /// Writes the data stored in the PersonData class into a csv file.
@@ -24,6 +26,32 @@ public static class CSVManager {
         }
 
         // TODO: Write to text file
+    }
+
+    public static string FloatListToString(string title, List<float> list) {
+        string returnString = title + ": ";
+
+        int index = 0;
+        for (int i = 0; i < list.Count - 2; i++) {
+            returnString += list[i].ToString() + ", ";
+            index = i;
+        }
+        returnString += list[list.Count - 1] + "\n";
+
+        return returnString;
+    }
+
+    public static string BoolListToString(string title, List<bool> list) {
+        string returnString = title + ": ";
+
+        int index = 0;
+        for (int i = 0; i < list.Count - 2; i++) {
+            returnString += list[i].ToString() + ", ";
+            index = i;
+        }
+        returnString += list[list.Count - 1] + "\n";
+
+        return returnString;
     }
 
 }
