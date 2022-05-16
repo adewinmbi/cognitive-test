@@ -11,4 +11,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/ReactionTest.unity
     guid: 55bdc29e72e82f748a9c490b6a77a064
+  - enabled: 1
+    path: Assets/Scenes/MainMenu.unity
+    guid: 546394a37b3b038479ef9fd4997f3209
   m_configObjects: {}

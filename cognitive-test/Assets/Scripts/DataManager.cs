@@ -10,6 +10,7 @@ public static class DataManager {
     }
 
     public static List<float> concentrationTimes;
+    public static string userName;
 
     /// <summary>
     /// Writes the data stored in the PersonData class into a csv file.
