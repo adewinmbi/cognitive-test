@@ -1,5 +1,3 @@
-// Error to fix: data can still be collected and added when user is viewing stats
-
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
@@ -13,7 +11,7 @@ public class Reaction : MonoBehaviour {
     private List<bool> reactionCorrect;
 
     private float lastGuessTime;
-
+    private bool isTestComplete;
     private Object[] symbols;
     private int correctNumber = 0; // 0 is default. Actual numbers are 1, 2, or 3.
     private int testIndex = 0;
@@ -35,21 +33,23 @@ public class Reaction : MonoBehaviour {
     }
 
     private void Update() {
-        for (int i = 0; i < keyCodes.Length; i++) {
-            if (Input.GetKeyDown(keyCodes[i])) {
-                if ((i + 1) == correctNumber) { // Did the user guess correctly?
-                    DisplayRandomSymbol();
-                    reactionCorrect.Add(true);
-                } else {
-                    reactionCorrect.Add(false);
-                }
-                reactionTimes.Add(Time.time - lastGuessTime);
-                lastGuessTime = Time.time;
-                testIndex++;
+        if (!isTestComplete) {
+            for (int i = 0; i < keyCodes.Length; i++) {
+                if (Input.GetKeyDown(keyCodes[i])) {
+                    if ((i + 1) == correctNumber) { // Did the user guess correctly?
+                        DisplayRandomSymbol();
+                        reactionCorrect.Add(true);
+                    } else {
+                        reactionCorrect.Add(false);
+                    }
+                    reactionTimes.Add(Time.time - lastGuessTime);
+                    lastGuessTime = Time.time;
+                    testIndex++;
 
-                // Check if test is complete after 10 rounds have passed
-                if (testIndex >= 10) {
-                    CompleteTest();
+                    // Check if test is complete after 10 rounds have passed
+                    if (testIndex >= 10) {
+                        CompleteTest();
+                    }
                 }
             }
         }
@@ -72,6 +72,8 @@ public class Reaction : MonoBehaviour {
         results += DataManager.FloatListToString("Reaction Times", reactionTimes);
         results += DataManager.BoolListToString("Reaction Accuracy", reactionCorrect);
         completeText.text = results;
+
+        isTestComplete = true;
     }
 
     // The sprites at index 0, 3, and 5 are belong in the SymbolTall UI image (because they are slightly taller images)
