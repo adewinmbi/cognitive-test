@@ -67,6 +67,7 @@ public class Reaction : MonoBehaviour {
 
         // Display test results
         string results = "";
+        results += "Name: " + DataManager.userName + "\n";
         if (DataManager.concentrationTimes != null) { // If the concentration test was skipped
             results += DataManager.FloatListToString("Concentration Times", DataManager.concentrationTimes);
         }
