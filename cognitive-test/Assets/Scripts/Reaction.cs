@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections;
 using System.Collections.Generic;
 
 public class Reaction : MonoBehaviour {
@@ -37,11 +38,11 @@ public class Reaction : MonoBehaviour {
             for (int i = 0; i < keyCodes.Length; i++) {
                 if (Input.GetKeyDown(keyCodes[i])) {
                     if ((i + 1) == correctNumber) { // Did the user guess correctly?
-                        DisplayRandomSymbol();
                         reactionCorrect.Add(true);
                     } else {
                         reactionCorrect.Add(false);
                     }
+                    DisplayRandomSymbol();
                     reactionTimes.Add(Time.time - lastGuessTime);
                     lastGuessTime = Time.time;
                     testIndex++;
@@ -76,6 +77,33 @@ public class Reaction : MonoBehaviour {
         isTestComplete = true;
     }
 
+    private IEnumerator LerpColor(Color startColor, Color endColor, float time) {
+        float elapsedTime = 0;
+        float halfTime = time / 2;
+
+        // Lerp to end color
+        while (elapsedTime < halfTime) {
+            symbolTall.color = Color.Lerp(startColor, endColor, Mathf.PingPong(elapsedTime / halfTime, 1)); // Lerp both (tall and wide) colors because either could be in use
+            symbolWide.color = Color.Lerp(startColor, endColor, Mathf.PingPong(elapsedTime / halfTime, 1));
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        // Lerp back to start color
+        elapsedTime = 0;
+        while (elapsedTime < halfTime) {
+            symbolWide.color = Color.Lerp(endColor, startColor, Mathf.PingPong(elapsedTime / halfTime, 1));
+            symbolTall.color = Color.Lerp(endColor, startColor, Mathf.PingPong(elapsedTime / halfTime, 1));
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        // Ensure color reaches start color again
+        symbolTall.color = startColor;
+        symbolWide.color = startColor;
+        yield return null;
+    }
+
     // The sprites at index 0, 3, and 5 are belong in the SymbolTall UI image (because they are slightly taller images)
     private void DisplayRandomSymbol() {
         // Clear old symbols
@@ -92,7 +120,9 @@ public class Reaction : MonoBehaviour {
             symbolWide.sprite = symbol;
             symbolWide.gameObject.SetActive(true);
         }
-        
+
+        StartCoroutine(LerpColor(Color.white, Color.grey, 0.1f));
+
         // Simplify this later rather than brute forcing it
         switch (randomIndex) {
             case 0:
