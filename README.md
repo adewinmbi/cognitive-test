@@ -2,7 +2,7 @@
 
 ## About
 
-A series of tests designed to measure cognitive ability.\
+A series of tests designed to measure cognitive ability.
 
 ## Tests
 
